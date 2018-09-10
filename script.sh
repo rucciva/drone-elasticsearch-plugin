@@ -13,7 +13,7 @@ url="${PLUGIN_ELASTICSEARCH_URL}/${PLUGIN_ELASTICSEARCH_INDEX}${index_postfix}/d
 body=`jq -c -n 'env' | jq -c 'with_entries( select( .key | contains("DRONE_") ) )' | jq -c 'with_entries(.key |= ascii_downcase)'`
 curl \
   -s \
-  -u "${ELASTICSEARCH_USERNAME}:${ELASTICSEARCH_PASSWORD}" \
+  -u "${ELASTICSEARCH_USERNAME:-$PLUGIN_ELASTICSEARCH_USERNAME}:${ELASTICSEARCH_PASSWORD:-$PLUGIN_ELASTICSEARCH_PASSWORD}" \
   -d "$body" \
   -H "Content-Type: application/json"  \
   "$url"
