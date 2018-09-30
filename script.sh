@@ -9,7 +9,7 @@ export DRONE_JOB_STARTED_DATE=`date -d "@$DRONE_JOB_STARTED" +'%Y/%m/%d %H:%M:%S
 export DRONE_JOB_FINISHED_DATE=`date -d "@$DRONE_JOB_FINISHED" +'%Y/%m/%d %H:%M:%S'`
 
 index_postfix=`eval $PLUGIN_ELASTICSEARCH_INDEX_POSTFIX_COMMAND`
-url="${PLUGIN_ELASTICSEARCH_URL}/${PLUGIN_ELASTICSEARCH_INDEX}${index_postfix}/doc"
+url="${ELASTICSEARCH_URL:-$PLUGIN_ELASTICSEARCH_URL}/${PLUGIN_ELASTICSEARCH_INDEX}${index_postfix}/doc"
 body=`jq -c -n 'env' | jq -c 'with_entries( select( .key | contains("DRONE_") ) )' | jq -c 'with_entries(.key |= ascii_downcase)'`
 curl \
   -s \
